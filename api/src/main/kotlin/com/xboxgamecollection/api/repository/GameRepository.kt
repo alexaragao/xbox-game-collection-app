@@ -1,6 +1,6 @@
-package com.xboxgamescollection.api.repository
+package com.xboxgamecollection.api.repository
 
-import com.xboxgamescollection.api.model.Game
+import com.xboxgamecollection.api.model.Game
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
