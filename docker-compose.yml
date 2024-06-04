@@ -1,0 +1,23 @@
+services:
+  api:
+    build:
+      context: ./api
+    depends_on:
+      - postgresdb
+    environment:
+      SPRING_DATASOURCE_DB: $POSTGRES_DB
+      SPRING_DATASOURCE_USERNAME: $POSTGRES_USER
+      SPRING_DATASOURCE_PASSWORD: $POSTGRES_PASSWORD
+      SPRING_DATASOURCE_HOSTNAME: postgresdb
+    ports:
+      - 5000:5000
+
+  postgresdb:
+    image: postgres:16
+    container_name: postgresdb
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB
+    ports:
+      - 5432:5432
