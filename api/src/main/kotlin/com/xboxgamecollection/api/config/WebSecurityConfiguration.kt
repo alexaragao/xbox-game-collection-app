@@ -1,5 +1,6 @@
 package com.xboxgamecollection.api.config
 
+import com.xboxgamecollection.api.security.JwtSecurityFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -9,10 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
 @EnableWebSecurity
-class WebSecurityConfiguration {
+class WebSecurityConfiguration(
+    private val securityFilter: JwtSecurityFilter
+) {
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
@@ -25,6 +29,7 @@ class WebSecurityConfiguration {
                     .anyRequest()
                     .fullyAuthenticated()
             }
+            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()
     }
