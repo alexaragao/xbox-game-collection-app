@@ -58,6 +58,17 @@ kotlin {
 
             // AndroidX/Compose
             implementation(libs.androidx.navigation.compose)
+
+            // Ktor
+            implementation(libs.ktor.client.auth)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+
+            // Coil
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor)
         }
 
         commonTest.dependencies {
@@ -69,9 +80,12 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.uiTooling)
             implementation(libs.androidx.activity.compose)
+
+            implementation(libs.ktor.client.okhttp)
         }
 
         iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
 
     }
