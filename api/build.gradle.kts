@@ -32,14 +32,12 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.auth0:java-jwt:4.4.0")
-
-    compileOnly("org.projectlombok:lombok")
+    implementation("org.flywaydb:flyway-core")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-
-    runtimeOnly("org.postgresql:postgresql")
-
     annotationProcessor("org.projectlombok:lombok")
+    runtimeOnly("org.postgresql:postgresql")
+    compileOnly("org.projectlombok:lombok")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
