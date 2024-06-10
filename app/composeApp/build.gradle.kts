@@ -55,6 +55,9 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+
+            // AndroidX/Compose
+            implementation(libs.androidx.navigation.compose)
         }
 
         commonTest.dependencies {
@@ -65,7 +68,7 @@ kotlin {
 
         androidMain.dependencies {
             implementation(compose.uiTooling)
-            implementation(libs.androidx.activityCompose)
+            implementation(libs.androidx.activity.compose)
         }
 
         iosMain.dependencies {
