@@ -1,4 +1,4 @@
-# Use an official OpenJDK runtime as a parent image
+# Use an official OpenJDK 17 runtime as a parent image
 FROM eclipse-temurin:17-jdk-focal
 
 # Set the working directory in the container
@@ -23,7 +23,7 @@ RUN ./gradlew build
 COPY build/libs/*.jar app.jar
 
 # Expose the port the application runs on
-EXPOSE 8080
+EXPOSE 5000
 
 # Run the jar file
 ENTRYPOINT ["java", "-jar", "app.jar"]
