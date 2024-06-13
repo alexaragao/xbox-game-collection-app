@@ -10,45 +10,51 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.xboxgamecollection.app.di.appModules
 import com.xboxgamecollection.app.navigation.AppScreen
 import com.xboxgamecollection.app.navigation.NavControllerProvider
 import com.xboxgamecollection.app.theme.AppTheme
+import org.koin.compose.KoinApplication
 
 @Composable
 internal fun App() = AppTheme {
-    NavControllerProvider { navController ->
-        NavHost(
-            navController = navController,
-            startDestination = AppScreen.Home.title
-        ) {
-            composable(route = AppScreen.Home.title) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text("Home Screen")
-
-                    Button(
-                        onClick = { navController.navigate(AppScreen.GameList.title) }
+    KoinApplication(
+        application = { modules(appModules) }
+    ) {
+        NavControllerProvider { navController ->
+            NavHost(
+                navController = navController,
+                startDestination = AppScreen.Home.title
+            ) {
+                composable(route = AppScreen.Home.title) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        Text("Go to GameList")
+                        Text("Home Screen")
+
+                        Button(
+                            onClick = { navController.navigate(AppScreen.GameList.title) }
+                        ) {
+                            Text("Go to GameList")
+                        }
                     }
                 }
-            }
 
-            composable(route = AppScreen.GameList.title) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text("GameList Screen")
-
-                    Button(
-                        onClick = { navController.popBackStack() }
+                composable(route = AppScreen.GameList.title) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        Text("Go to Home")
+                        Text("GameList Screen")
+
+                        Button(
+                            onClick = { navController.popBackStack() }
+                        ) {
+                            Text("Go to Home")
+                        }
                     }
                 }
             }
