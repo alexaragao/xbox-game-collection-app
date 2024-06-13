@@ -56,6 +56,10 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
+            //Koin
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+
             // AndroidX/Compose
             implementation(libs.androidx.navigation.compose)
 
