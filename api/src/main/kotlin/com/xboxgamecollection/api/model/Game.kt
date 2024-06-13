@@ -1,16 +1,24 @@
 package com.xboxgamecollection.api.model
 
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Table
+import org.hibernate.annotations.ColumnDefault
+import org.hibernate.annotations.UuidGenerator
+import java.time.LocalDate
 import java.time.LocalDateTime
-import jakarta.persistence.*
+import java.util.UUID
 
 @Entity
 @Table(name = "games")
 data class Game(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val id: Long = 0,
+    @UuidGenerator
+    @ColumnDefault("gen_random_uuid()")
+    val id: UUID = UUID.randomUUID(),
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", unique = true, nullable = false)
     val title: String,
 
     @Column(name = "description", nullable = false)
@@ -41,11 +49,13 @@ data class Game(
     val isDigital: Boolean,
 
     @Column(name = "release_date", nullable = false)
-    val releaseDate: LocalDateTime,
+    val releaseDate: LocalDate,
 
     @Column(name = "created_at", nullable = false)
+    @ColumnDefault("now()")
     val createdAt: LocalDateTime = LocalDateTime.now(),
 
     @Column(name = "updated_at", nullable = false)
+    @ColumnDefault("now()")
     val updatedAt: LocalDateTime = LocalDateTime.now()
 )

@@ -5,7 +5,9 @@ import com.xboxgamecollection.api.repository.UserRepository
 import org.springframework.stereotype.Service
 
 @Service
-class UserService(private val userRepository: UserRepository) {
+class UserService(
+    private val userRepository: UserRepository
+) {
 
     fun findAll(): List<User> = userRepository.findAll()
 
