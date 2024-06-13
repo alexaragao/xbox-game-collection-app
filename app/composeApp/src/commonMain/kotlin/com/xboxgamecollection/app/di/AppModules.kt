@@ -1,3 +1,7 @@
 package com.xboxgamecollection.app.di
 
-val appModules = listOf()
+import com.xboxgamecollection.app.features.game.di.gameModule
+
+val appModules = listOf(
+    gameModule,
+)
