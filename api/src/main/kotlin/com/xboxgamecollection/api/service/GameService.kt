@@ -9,7 +9,13 @@ class GameService(
     private val gameRepository: GameRepository
 ) {
 
-    fun findAll(): List<Game> = gameRepository.findAll()
+    fun findAll(
+        title: String?,
+        genre: String?
+    ): List<Game> = gameRepository.findAll().filter { game ->
+        (title == null || game.title.contains(title, ignoreCase = true)) &&
+        (genre == null || game.genre.contains(genre, ignoreCase = true))
+    }
 
     fun findById(id: Long): Game? = gameRepository.findById(id).orElse(null)
 

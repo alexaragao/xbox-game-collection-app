@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.*
 class GameController(val gameService: GameService) {
 
     @GetMapping
-    fun listAllGames(): List<Game> {
-        return gameService.findAll()
+    fun listAllGames(
+        @RequestParam(required = false) title: String?,
+        @RequestParam(required = false) genre: String?
+    ): List<Game> {
+        return gameService.findAll(title, genre)
     }
 
 }
