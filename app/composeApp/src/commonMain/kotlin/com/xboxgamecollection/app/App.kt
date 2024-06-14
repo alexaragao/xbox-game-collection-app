@@ -19,13 +19,10 @@ import org.koin.compose.KoinApplication
 
 @Composable
 internal fun App() = AppTheme {
-    KoinApplication(
-        application = { modules(appModules) }
-    ) {
+    KoinApplication(application = { modules(appModules) }) {
         NavControllerProvider { navController ->
             NavHost(
-                navController = navController,
-                startDestination = AppScreen.Home.title
+                navController = navController, startDestination = AppScreen.Home.title
             ) {
                 composable(route = AppScreen.Home.title) {
                     Column(
@@ -35,9 +32,7 @@ internal fun App() = AppTheme {
                     ) {
                         Text("Home Screen")
 
-                        Button(
-                            onClick = { navController.navigate(AppScreen.GameList.title) }
-                        ) {
+                        Button(onClick = { navController.navigate(AppScreen.GameList.title) }) {
                             Text("Go to GameList")
                         }
                     }

@@ -29,15 +29,10 @@ import com.xboxgamecollection.app.features.core.composables.BottomTabItems
 fun GameListScreen() {
     var textState by remember { mutableStateOf(TextFieldValue("")) }
 
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+    Scaffold(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         content = { paddingValues ->
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
+                modifier = Modifier.fillMaxSize().padding(paddingValues)
             ) {
                 SearchBar(textState, onTextChanged = { textState = it })
 
@@ -68,9 +63,7 @@ fun SearchBar(textState: TextFieldValue, onTextChanged: (TextFieldValue) -> Unit
                 imageVector = Icons.Filled.Search, contentDescription = "Search Icon"
             )
         },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
         shape = MaterialTheme.shapes.medium,
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
@@ -109,10 +102,7 @@ fun GameGrid() {
 @Composable
 fun GameItem(imageUrl: String, description: String) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .padding(6.dp)
+        modifier = Modifier.fillMaxWidth().height(200.dp).padding(6.dp)
     ) {
         Box {
             AsyncImage(
@@ -129,9 +119,7 @@ fun FilterButtons(
     filters: List<String>, selectedFilter: String?, onFilterSelected: (String) -> Unit
 ) {
     LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp),
+        modifier = Modifier.fillMaxWidth().padding(start = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -142,9 +130,7 @@ fun FilterButtons(
                     containerColor = if (filter == selectedFilter) MaterialTheme.colorScheme.primary else Color.Transparent,
                     contentColor = if (filter == selectedFilter) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                 ),
-                modifier = Modifier
-                    .padding(horizontal = 4.dp, vertical = 8.dp)
-                    .height(40.dp),
+                modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp).height(40.dp),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
                 shape = MaterialTheme.shapes.extraLarge
             ) {
@@ -156,7 +142,30 @@ fun FilterButtons(
 
 @Composable
 fun Filters() {
-    val filters = listOf("All", "FPS", "Adventure", "Point & Click", "Sports")
+    val filters = listOf(
+        "All",
+        "Action",
+        "Action-adventure",
+        "Action RPG",
+        "Adventure",
+        "Bullet hell",
+        "Card & Board",
+        "First-person Shooter",
+        "Hack & Slash",
+        "Music",
+        "Rhythm",
+        "Open World",
+        "Platformer",
+        "Puzzle & Trivia",
+        "Racing",
+        "Shooter",
+        "Simulation",
+        "Sports",
+        "Strategy & Simulation",
+        "Survival Horror",
+        "Third-person Shooter",
+        "Western"
+    )
     var selectedFilter by remember { mutableStateOf("All") }
 
     FilterButtons(filters = filters, selectedFilter = selectedFilter, onFilterSelected = { filter ->
@@ -167,17 +176,14 @@ fun Filters() {
 
 @Composable
 fun CustomBottomAppBar() {
-    BottomAppBar(
-        modifier = Modifier
-            .background(MaterialTheme.colorScheme.background)
-            .drawBehind {
-                drawLine(
-                    color = Color.Gray,
-                    start = Offset(0f, 0f),
-                    end = Offset(size.width, 0f),
-                    strokeWidth = 1.dp.toPx()
-                )
-            },
+    BottomAppBar(modifier = Modifier.background(MaterialTheme.colorScheme.background).drawBehind {
+        drawLine(
+            color = Color.Gray,
+            start = Offset(0f, 0f),
+            end = Offset(size.width, 0f),
+            strokeWidth = 1.dp.toPx()
+        )
+    },
 
         content = {
             BottomTab(
