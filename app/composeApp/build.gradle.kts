@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.compose)
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
@@ -56,6 +57,10 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
+            //Koin
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+
             // AndroidX/Compose
             implementation(libs.androidx.navigation.compose)
 
@@ -65,6 +70,7 @@ kotlin {
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.kotlinx.serialization.json)
 
             // Coil
             implementation(libs.coil.compose)
