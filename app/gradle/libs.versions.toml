@@ -9,6 +9,7 @@ androidx-uiTest = "1.6.7"
 coil = "3.0.0-alpha06"
 ktor = "2.3.11"
 androidx-navigation = "2.7.0-alpha06"
+navigationCompose = "2.7.7"
 
 [libraries]
 
@@ -17,6 +18,7 @@ androidx-testManifest = { module = "androidx.compose.ui:ui-test-manifest", versi
 androidx-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-uiTest" }
 
 androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 
 # Coil
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }

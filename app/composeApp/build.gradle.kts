@@ -131,3 +131,6 @@ android {
         kotlinCompilerExtensionVersion = "1.5.11"
     }
 }
+dependencies {
+    implementation(libs.navigation.compose)
+}
