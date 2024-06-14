@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.xboxgamecollection.app.features.gameList.screens.GameListScreen
 import com.xboxgamecollection.app.navigation.AppScreen
 import com.xboxgamecollection.app.navigation.NavControllerProvider
 import com.xboxgamecollection.app.theme.AppTheme
@@ -38,19 +39,7 @@ internal fun App() = AppTheme {
             }
 
             composable(route = AppScreen.GameList.title) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text("GameList Screen")
-
-                    Button(
-                        onClick = { navController.popBackStack() }
-                    ) {
-                        Text("Go to Home")
-                    }
-                }
+                GameListScreen()
             }
         }
     }
