@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.xboxgamecollection.app.features.gameList.screens.GameListScreen
 import com.xboxgamecollection.app.di.appModules
 import com.xboxgamecollection.app.navigation.AppScreen
 import com.xboxgamecollection.app.navigation.NavControllerProvider
@@ -18,13 +19,10 @@ import org.koin.compose.KoinApplication
 
 @Composable
 internal fun App() = AppTheme {
-    KoinApplication(
-        application = { modules(appModules) }
-    ) {
+    KoinApplication(application = { modules(appModules) }) {
         NavControllerProvider { navController ->
             NavHost(
-                navController = navController,
-                startDestination = AppScreen.Home.title
+                navController = navController, startDestination = AppScreen.Home.title
             ) {
                 composable(route = AppScreen.Home.title) {
                     Column(
@@ -34,28 +32,14 @@ internal fun App() = AppTheme {
                     ) {
                         Text("Home Screen")
 
-                        Button(
-                            onClick = { navController.navigate(AppScreen.GameList.title) }
-                        ) {
+                        Button(onClick = { navController.navigate(AppScreen.GameList.title) }) {
                             Text("Go to GameList")
                         }
                     }
                 }
 
                 composable(route = AppScreen.GameList.title) {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        Text("GameList Screen")
-
-                        Button(
-                            onClick = { navController.popBackStack() }
-                        ) {
-                            Text("Go to Home")
-                        }
-                    }
+                    GameListScreen()
                 }
             }
         }

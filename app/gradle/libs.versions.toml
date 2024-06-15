@@ -10,6 +10,7 @@ coil = "3.0.0-alpha06"
 ktor = "2.3.11"
 koin = "3.6.0-alpha1"
 androidx-navigation = "2.7.0-alpha06"
+navigationCompose = "2.7.7"
 kotlinx-serialization-json = "1.7.0"
 
 [libraries]
