@@ -16,11 +16,11 @@ data class UserGameCollection(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    val user: User,
+    val user: User?,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id", insertable = false, updatable = false)
-    val game: Game,
+    val game: Game?,
 
     @Column(name = "notes")
     val notes: String
