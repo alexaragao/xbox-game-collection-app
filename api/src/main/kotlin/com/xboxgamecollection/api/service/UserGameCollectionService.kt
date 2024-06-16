@@ -12,8 +12,11 @@ class UserGameCollectionService(
 
     fun findAllByUserId(userId: UUID): List<UserGameCollection> {
         val userGames = userGameCollectionRepository.findAllByUserId(userId)
+        return userGames
+    }
 
-        return mutableListOf()
+    fun addGameToCollection(userGameCollection: UserGameCollection): UserGameCollection {
+        return userGameCollectionRepository.save(userGameCollection)
     }
 
 }
