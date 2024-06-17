@@ -6,4 +6,5 @@ enum class AppScreen(val title: String) {
     GameDetail(title = "app_game_detail"),
     SignIn(title = "app_sign_in"),
     Register(title = "app_register"),
+    BarcodeScanner(title = "app_barcode_scanner"),
 }
