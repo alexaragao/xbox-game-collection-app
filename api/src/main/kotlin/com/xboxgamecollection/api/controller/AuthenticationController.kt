@@ -1,7 +1,7 @@
 package com.xboxgamecollection.api.controller
 
-import com.xboxgamecollection.api.dto.AuthenticationLoginResponse
 import com.xboxgamecollection.api.dto.AuthenticationLoginRequest
+import com.xboxgamecollection.api.dto.AuthenticationLoginResponse
 import com.xboxgamecollection.api.dto.AuthenticationRegisterRequest
 import com.xboxgamecollection.api.security.TokenService
 import com.xboxgamecollection.api.service.UserService
@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.bind.annotation.PostMapping
@@ -54,6 +55,21 @@ class AuthenticationController(
 
         val response = AuthenticationLoginResponse(
             user = user!!,
+            accessToken = accessToken
+        )
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(response)
+    }
+
+    @PostMapping("/auth")
+    fun authenticateWithToken(@AuthenticationPrincipal loggedUser: User): ResponseEntity<AuthenticationLoginResponse> {
+        val user = userService.findByNickname(loggedUser.username)!!
+        val accessToken = tokenService.generateAccessToken(loggedUser)
+
+        val response = AuthenticationLoginResponse(
+            user = user,
             accessToken = accessToken
         )
 
