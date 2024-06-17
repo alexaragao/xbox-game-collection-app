@@ -63,6 +63,7 @@ kotlin {
 
             // AndroidX/Compose
             implementation(libs.androidx.navigation.compose)
+            implementation(libs.androidx.datastore.preferences.core)
 
             // Ktor
             implementation(libs.ktor.client.auth)
