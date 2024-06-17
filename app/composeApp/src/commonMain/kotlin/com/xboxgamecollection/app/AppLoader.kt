@@ -52,7 +52,7 @@ internal fun AppLoader(
     val appState = appViewModel.state.value
     val startScreen =
         if (appState.isSignedIn) AppScreen.GameList.title
-        else AppScreen.SignIn.title
+        else AppScreen.Start.title
 
     if (!isLoading) return content(startScreen)
 
