@@ -1,15 +1,18 @@
 package com.xboxgamecollection.app
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.xboxgamecollection.app.di.appModules
-import com.xboxgamecollection.app.features.gameList.screens.GameListScreen
+import com.xboxgamecollection.app.ui.screens.gameList.GameListScreen
 import com.xboxgamecollection.app.navigation.AppScreen
 import com.xboxgamecollection.app.navigation.NavControllerProvider
 import com.xboxgamecollection.app.theme.AppTheme
 import com.xboxgamecollection.app.ui.screens.register.RegisterScreen
 import com.xboxgamecollection.app.ui.screens.barcodeScanner.BarcodeScannerScreen
+import com.xboxgamecollection.app.ui.screens.gameDetails.GameDetailsScreen
 import com.xboxgamecollection.app.ui.screens.profile.ProfileScreen
 import com.xboxgamecollection.app.ui.screens.signIn.SignInScreen
 import org.koin.compose.KoinApplication
@@ -25,7 +28,7 @@ internal fun App() = AppTheme {
                         startDestination = startScreen
                     ) {
                         composable(route = AppScreen.GameList.title) {
-                            GameListScreen(onNavigateToGameDetails = {})
+                            GameListScreen()
                         }
 
                         composable(
@@ -46,6 +49,14 @@ internal fun App() = AppTheme {
                         composable(route = AppScreen.BarcodeScanner.title) {
                             BarcodeScannerScreen()
                         }
+
+                        composable(
+                            route = AppScreen.GameDetails.title,
+                            arguments = listOf(
+                                navArgument("gameId") { type = NavType.StringType }
+                            ),
+                            content = { GameDetailsScreen(it) }
+                        )
                     }
                 }
             }
