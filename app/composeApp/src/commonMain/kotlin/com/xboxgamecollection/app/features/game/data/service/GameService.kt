@@ -7,9 +7,9 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 
-class GameService (
+class GameService(
     private val client: HttpClient
-): IGameService {
+) : IGameService {
     override suspend fun getById(gameId: String): Game? {
         return client.get("/games/${gameId}").body()
     }

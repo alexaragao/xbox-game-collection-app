@@ -7,7 +7,7 @@ import com.xboxgamecollection.app.features.game.domain.service.IGameService
 
 class GameRepository(
     private val gameService: IGameService
-): IGameRepository {
+) : IGameRepository {
     override suspend fun getById(gameId: String): Game? {
         return gameService.getById(gameId)
     }
