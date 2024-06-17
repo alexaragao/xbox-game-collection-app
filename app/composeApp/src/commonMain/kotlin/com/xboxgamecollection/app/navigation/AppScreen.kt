@@ -1,6 +1,7 @@
 package com.xboxgamecollection.app.navigation
 
 enum class AppScreen(val title: String) {
+    Start(title = "app_start"),
     Home(title = "app_home"),
     GameList(title = "app_game_list"),
     GameDetail(title = "app_game_detail"),
