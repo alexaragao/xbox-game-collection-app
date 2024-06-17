@@ -12,6 +12,8 @@ koin = "3.6.0-alpha1"
 androidx-data-store = "1.1.1"
 androidx-viewmodel = "2.8.0"
 androidx-navigation = "2.7.0-alpha06"
+androidx-camerax = "1.4.0-beta02"
+android-barcode-scanning = "17.2.0"
 kotlinx-serialization-json = "1.7.0"
 
 [libraries]
@@ -45,6 +47,12 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ## Ktor iOS dependency
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+
+# Android Camera + Barcode dependencies
+mlkit-barcode-scanning = { module = "com.google.mlkit:barcode-scanning", version.ref = "android-barcode-scanning" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "androidx-camerax" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "androidx-camerax" }
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "androidx-camerax" }
 
 [plugins]
 
