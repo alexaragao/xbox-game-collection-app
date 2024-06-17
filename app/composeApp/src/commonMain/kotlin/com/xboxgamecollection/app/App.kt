@@ -9,9 +9,10 @@ import com.xboxgamecollection.app.navigation.AppScreen
 import com.xboxgamecollection.app.navigation.NavControllerProvider
 import com.xboxgamecollection.app.theme.AppTheme
 import com.xboxgamecollection.app.ui.screens.register.RegisterScreen
-import com.xboxgamecollection.app.ui.screens.signIn.SignInScreen
 import com.xboxgamecollection.app.ui.screens.barcodeScanner.BarcodeScannerScreen
 import com.xboxgamecollection.app.ui.screens.start.StartScreen
+import com.xboxgamecollection.app.ui.screens.profile.ProfileScreen
+import com.xboxgamecollection.app.ui.screens.signIn.SignInScreen
 import org.koin.compose.KoinApplication
 
 @Composable
@@ -31,6 +32,11 @@ internal fun App() = AppTheme {
                         composable(
                             route = AppScreen.SignIn.title,
                             content = { SignInScreen() }
+                        )
+
+                        composable(
+                            route = AppScreen.Profile.title,
+                            content = { ProfileScreen() }
                         )
 
                         composable(

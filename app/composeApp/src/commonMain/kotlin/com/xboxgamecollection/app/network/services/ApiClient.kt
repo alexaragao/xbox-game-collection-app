@@ -1,6 +1,10 @@
 package com.xboxgamecollection.app.network.services
 
+import com.xboxgamecollection.app.database.TokenDataStore
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerTokens
+import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
@@ -18,6 +22,20 @@ val apiClient = HttpClient {
             prettyPrint = true
             ignoreUnknownKeys = true
         })
+    }
+
+    install(Auth) {
+        bearer {
+            loadTokens {
+                val accessToken = TokenDataStore.getAccessToken()
+                val refreshToken = TokenDataStore.getRefreshToken()
+
+                if (accessToken != null && refreshToken != null) BearerTokens(
+                    accessToken,
+                    refreshToken
+                ) else null
+            }
+        }
     }
 
     defaultRequest {

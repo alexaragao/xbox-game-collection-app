@@ -68,7 +68,9 @@ fun GameListScreen(
             }
         },
         bottomBar = {
-            CustomBottomAppBar()
+            BottomTab(
+                itemSelected = BottomTabItems.GAMES
+            )
         }
     )
 }
@@ -195,26 +197,4 @@ fun Filters(onGenreChanged: (String) -> Unit) {
         selectedFilter = filter
         onGenreChanged(filter)
     })
-}
-
-@Composable
-fun CustomBottomAppBar() {
-    BottomAppBar(
-        modifier = Modifier.background(MaterialTheme.colorScheme.background).drawBehind {
-            drawLine(
-                color = Color.Gray,
-                start = Offset(0f, 0f),
-                end = Offset(size.width, 0f),
-                strokeWidth = 1.dp.toPx()
-            )
-        },
-        content = {
-            BottomTab(
-                onNavigateToGameList = { },
-                onNavigateToCollection = { },
-                onNavigateToProfile = { },
-                itemSelected = BottomTabItems.GAMES
-            )
-        }
-    )
 }
