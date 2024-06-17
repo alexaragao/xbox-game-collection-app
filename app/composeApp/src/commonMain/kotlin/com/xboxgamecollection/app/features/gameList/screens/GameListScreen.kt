@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -23,31 +24,69 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.xboxgamecollection.app.features.core.composables.BottomTab
 import com.xboxgamecollection.app.features.core.composables.BottomTabItems
+import com.xboxgamecollection.app.features.game.data.model.Game
+import com.xboxgamecollection.app.features.game.domain.usecase.GetAllGamesUseCase
+import org.koin.compose.getKoin
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GameListScreen() {
-    var textState by remember { mutableStateOf(TextFieldValue("")) }
+fun GameListScreen(
+    onNavigateToGameDetails: (String) -> Unit
+) {
+    val getAllGamesUseCase: GetAllGamesUseCase = getKoin().get()
+    val viewModel = remember { GameListScreenViewModel(getAllGamesUseCase) }
+    val state = viewModel.state
 
-    Scaffold(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+    Scaffold(
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         content = { paddingValues ->
-            Column(
-                modifier = Modifier.fillMaxSize().padding(paddingValues)
-            ) {
-                SearchBar(textState, onTextChanged = { textState = it })
+            Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    SearchBar(
+                        textState = state.search,
+                        onTextChanged = {
+                            viewModel.onSearchChanged(it)
+                        }
+                    )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                Title(text = "Game List")
+                    Title(text = "Game List")
 
-                Filters()
+                    Filters(onGenreChanged = viewModel::onGenreChanged)
 
-                GameGrid()
+                    if (state.isLoading) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                    } else {
+                        GameGrid(games = state.gameList, onGameSelected = onNavigateToGameDetails)
+                    }
+                }
+
+
             }
         },
         bottomBar = {
             CustomBottomAppBar()
-        })
+        }
+    )
+}
+
+@Composable
+fun GameGrid(games: List<Game>, onGameSelected: (String) -> Unit = {}) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        contentPadding = PaddingValues(16.dp),
+    ) {
+        itemsIndexed(games) { _, game ->
+            GameItem(
+                imageUrl = game.boxArtUrl,
+                description = game.title,
+                onClick = { onGameSelected(game.id) }
+            )
+        }
+    }
 }
 
 @Composable
@@ -56,14 +95,14 @@ fun SearchBar(textState: TextFieldValue, onTextChanged: (TextFieldValue) -> Unit
         value = textState,
         onValueChange = onTextChanged,
         placeholder = {
-            Text(text = "Pesquisar jogos")
+            Text(text = "Search for games...")
         },
         leadingIcon = {
-            Icon(
-                imageVector = Icons.Filled.Search, contentDescription = "Search Icon"
-            )
+            Icon(imageVector = Icons.Filled.Search, contentDescription = "Search Icon")
         },
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = MaterialTheme.shapes.medium,
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
@@ -84,33 +123,17 @@ fun Title(text: String) {
 }
 
 @Composable
-fun GameGrid() {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        contentPadding = PaddingValues(16.dp),
-    ) {
-        items(9) { index ->
-            GameItem(
-                // TODO: Replace with response API
-                imageUrl = "https://m.media-amazon.com/images/I/91ParGOiL-S._AC_UF1000,1000_QL80_.jpg",
-                description = "Game $index"
-            )
-        }
-    }
-}
-
-@Composable
-fun GameItem(imageUrl: String, description: String) {
+fun GameItem(imageUrl: String, description: String, onClick: () -> Unit = {}) {
     Card(
-        modifier = Modifier.fillMaxWidth().height(200.dp).padding(6.dp)
+        modifier = Modifier.fillMaxWidth().aspectRatio(0.71f).padding(6.dp),
+        onClick = onClick
     ) {
-        Box {
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = description,
-                contentScale = ContentScale.Crop,
-            )
-        }
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = description,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
 
@@ -141,7 +164,7 @@ fun FilterButtons(
 }
 
 @Composable
-fun Filters() {
+fun Filters(onGenreChanged: (String) -> Unit) {
     val filters = listOf(
         "All",
         "Action",
@@ -170,21 +193,21 @@ fun Filters() {
 
     FilterButtons(filters = filters, selectedFilter = selectedFilter, onFilterSelected = { filter ->
         selectedFilter = filter
-        // TODO: Handle filter selection
+        onGenreChanged(filter)
     })
 }
 
 @Composable
 fun CustomBottomAppBar() {
-    BottomAppBar(modifier = Modifier.background(MaterialTheme.colorScheme.background).drawBehind {
-        drawLine(
-            color = Color.Gray,
-            start = Offset(0f, 0f),
-            end = Offset(size.width, 0f),
-            strokeWidth = 1.dp.toPx()
-        )
-    },
-
+    BottomAppBar(
+        modifier = Modifier.background(MaterialTheme.colorScheme.background).drawBehind {
+            drawLine(
+                color = Color.Gray,
+                start = Offset(0f, 0f),
+                end = Offset(size.width, 0f),
+                strokeWidth = 1.dp.toPx()
+            )
+        },
         content = {
             BottomTab(
                 onNavigateToGameList = { },
@@ -192,5 +215,6 @@ fun CustomBottomAppBar() {
                 onNavigateToProfile = { },
                 itemSelected = BottomTabItems.GAMES
             )
-        })
+        }
+    )
 }
