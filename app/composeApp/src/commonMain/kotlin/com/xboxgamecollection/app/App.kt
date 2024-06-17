@@ -39,7 +39,12 @@ internal fun App() = AppTheme {
                 }
 
                 composable(route = AppScreen.GameList.title) {
-                    GameListScreen()
+                    GameListScreen(
+                        onNavigateToGameDetails = { gameId ->
+                            // TODO: Navigate to GameDetails
+                            openUrl("https://www.xbox.com/en-US/games/store/$gameId")
+                        }
+                    )
                 }
             }
         }
