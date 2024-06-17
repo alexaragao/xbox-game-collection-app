@@ -12,7 +12,6 @@ koin = "3.6.0-alpha1"
 androidx-data-store = "1.1.1"
 androidx-viewmodel = "2.8.0"
 androidx-navigation = "2.7.0-alpha06"
-navigationCompose = "2.7.7"
 kotlinx-serialization-json = "1.7.0"
 
 [libraries]
