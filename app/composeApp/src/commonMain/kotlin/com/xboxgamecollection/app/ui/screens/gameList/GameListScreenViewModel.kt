@@ -1,25 +1,23 @@
-package com.xboxgamecollection.app.features.gameList.screens
+package com.xboxgamecollection.app.ui.screens.gameList
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.xboxgamecollection.app.features.game.data.model.Game
+import androidx.navigation.NavHostController
 import com.xboxgamecollection.app.features.game.domain.usecase.GetAllGamesUseCase
-import kotlinx.coroutines.Job
+import com.xboxgamecollection.app.navigation.AppScreen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
+import org.koin.mp.KoinPlatform.getKoin
 
 
 class GameListScreenViewModel(
-    private val getAllGamesUseCase: GetAllGamesUseCase
+    private val navController: NavHostController
 ) : ViewModel() {
+    val getAllGamesUseCase: GetAllGamesUseCase = getKoin().get()
+
     private val _uiState = MutableStateFlow(GameListState())
     val uiState: StateFlow<GameListState> = _uiState.asStateFlow()
 
@@ -38,6 +36,11 @@ class GameListScreenViewModel(
         }
     }
 
+    fun onSelectGame(gameId: String) {
+        val route = AppScreen.GameDetails.title.replace("{gameId}", gameId)
+        navController.navigate(route)
+    }
+
     fun onSearchChanged(search: TextFieldValue) {
         _uiState.value = _uiState.value.copy(search = search)
         loadGames()
@@ -49,5 +52,9 @@ class GameListScreenViewModel(
             _uiState.value = _uiState.value.copy(genre = genre)
             loadGames()
         }
+    }
+
+    fun onNavigateToScanner() {
+        navController.navigate(AppScreen.BarcodeScanner.title)
     }
 }

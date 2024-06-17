@@ -1,4 +1,4 @@
-package com.xboxgamecollection.app.features.gameList.screens
+package com.xboxgamecollection.app.ui.screens.gameList
 
 
 import androidx.compose.foundation.BorderStroke
@@ -10,13 +10,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
@@ -26,19 +25,28 @@ import com.xboxgamecollection.app.features.core.composables.BottomTab
 import com.xboxgamecollection.app.features.core.composables.BottomTabItems
 import com.xboxgamecollection.app.features.game.data.model.Game
 import com.xboxgamecollection.app.features.game.domain.usecase.GetAllGamesUseCase
+import com.xboxgamecollection.app.navigation.LocalNavController
 import org.koin.compose.getKoin
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GameListScreen(
-    onNavigateToGameDetails: (String) -> Unit
-) {
-    val getAllGamesUseCase: GetAllGamesUseCase = getKoin().get()
-    val viewModel = remember { GameListScreenViewModel(getAllGamesUseCase) }
+fun GameListScreen() {
+    val navController = LocalNavController.current
+
+    val viewModel = remember { GameListScreenViewModel(navController) }
     val state by viewModel.uiState.collectAsState()
 
     Scaffold(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { viewModel.onNavigateToScanner() }
+            ) {
+                Icon(
+                    contentDescription = "Add game to collection",
+                    imageVector = Icons.Default.AddCircle
+                )
+            }
+        },
         content = { paddingValues ->
             Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
                 Column(
@@ -60,7 +68,10 @@ fun GameListScreen(
                     if (state.isLoading) {
                         CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                     } else {
-                        GameGrid(games = state.gameList, onGameSelected = onNavigateToGameDetails)
+                        GameGrid(
+                            games = state.gameList,
+                            onGameSelected = { viewModel.onSelectGame(it) }
+                        )
                     }
                 }
 

@@ -1,4 +1,4 @@
-package com.xboxgamecollection.app.features.gameList.screens
+package com.xboxgamecollection.app.ui.screens.gameList
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.xboxgamecollection.app.features.game.data.model.Game
