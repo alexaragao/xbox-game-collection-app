@@ -9,8 +9,9 @@ androidx-uiTest = "1.6.7"
 coil = "3.0.0-alpha06"
 ktor = "2.3.11"
 koin = "3.6.0-alpha1"
+androidx-data-store = "1.1.1"
+androidx-viewmodel = "2.8.0"
 androidx-navigation = "2.7.0-alpha06"
-navigationCompose = "2.7.7"
 kotlinx-serialization-json = "1.7.0"
 
 [libraries]
@@ -18,8 +19,10 @@ kotlinx-serialization-json = "1.7.0"
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-testManifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-uiTest" }
 androidx-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-uiTest" }
+androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "androidx-data-store" }
 
 androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
+androidx-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-viewmodel" }
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 
