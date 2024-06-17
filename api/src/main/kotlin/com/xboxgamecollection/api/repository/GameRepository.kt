@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface GameRepository : JpaRepository<Game, Long> {
-    @Query("SELECT g FROM Game g WHERE g.title LIKE %:search% AND g.genre = :genre")
+    @Query("SELECT g FROM Game g WHERE lower(g.title) LIKE lower(concat('%', :search, '%')) AND lower(g.genre) LIKE lower(concat('%', :genre, '%'))")
     fun search(@Param("search") search: String, @Param("genre") genre: String): List<Game>
 }
