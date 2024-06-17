@@ -10,21 +10,18 @@ import androidx.lifecycle.viewModelScope
 import com.xboxgamecollection.app.features.game.data.model.Game
 import com.xboxgamecollection.app.features.game.domain.usecase.GetAllGamesUseCase
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 
-data class GameListState(
-    val gameList: List<Game> = emptyList(),
-    val search: TextFieldValue = TextFieldValue(""),
-    val genre: String = "",
-    val isLoading: Boolean = false
-)
 
 class GameListScreenViewModel(
     private val getAllGamesUseCase: GetAllGamesUseCase
 ) : ViewModel() {
-    var state by mutableStateOf(GameListState())
-        private set
+    private val _uiState = MutableStateFlow(GameListState())
+    val uiState: StateFlow<GameListState> = _uiState.asStateFlow()
 
     init {
         loadGames()
@@ -32,22 +29,25 @@ class GameListScreenViewModel(
 
     private fun loadGames() {
         viewModelScope.launch {
-            state = state.copy(isLoading = true)
+            _uiState.value = _uiState.value.copy(isLoading = true)
             val games = getAllGamesUseCase(
-                state.search.text,
-                if (state.genre == "All") null else state.genre
+                _uiState.value.search.text.ifEmpty { null },
+                if (_uiState.value.genre === "All") null else _uiState.value.genre
             )
-            state = state.copy(gameList = games, isLoading = false)
+            _uiState.value = _uiState.value.copy(gameList = games, isLoading = false)
         }
     }
 
     fun onSearchChanged(search: TextFieldValue) {
-        state = state.copy(search = search)
+        _uiState.value = _uiState.value.copy(search = search)
         loadGames()
     }
 
     fun onGenreChanged(genre: String) {
-        state = state.copy(genre = genre)
-        loadGames()
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            _uiState.value = _uiState.value.copy(genre = genre)
+            loadGames()
+        }
     }
 }

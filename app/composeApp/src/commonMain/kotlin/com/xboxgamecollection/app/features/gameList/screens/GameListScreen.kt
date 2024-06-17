@@ -35,7 +35,7 @@ fun GameListScreen(
 ) {
     val getAllGamesUseCase: GetAllGamesUseCase = getKoin().get()
     val viewModel = remember { GameListScreenViewModel(getAllGamesUseCase) }
-    val state = viewModel.state
+    val state by viewModel.uiState.collectAsState()
 
     Scaffold(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
