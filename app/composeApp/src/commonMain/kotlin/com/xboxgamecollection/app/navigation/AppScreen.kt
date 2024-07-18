@@ -9,4 +9,5 @@ enum class AppScreen(val title: String) {
     SignIn(title = "app_sign_in"),
     Register(title = "app_register"),
     BarcodeScanner(title = "app_barcode_scanner"),
+    Collection(title = "app_collection"),
 }

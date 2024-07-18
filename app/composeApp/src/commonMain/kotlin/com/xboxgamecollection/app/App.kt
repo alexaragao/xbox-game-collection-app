@@ -10,6 +10,7 @@ import com.xboxgamecollection.app.ui.screens.gameList.GameListScreen
 import com.xboxgamecollection.app.navigation.AppScreen
 import com.xboxgamecollection.app.navigation.NavControllerProvider
 import com.xboxgamecollection.app.theme.AppTheme
+import com.xboxgamecollection.app.ui.screens.collection.CollectionScreen
 import com.xboxgamecollection.app.ui.screens.register.RegisterScreen
 import com.xboxgamecollection.app.ui.screens.barcodeScanner.BarcodeScannerScreen
 import com.xboxgamecollection.app.ui.screens.gameDetails.GameDetailsScreen
@@ -63,6 +64,14 @@ internal fun App() = AppTheme {
                             StartScreen(
                                 onNavigateToSignIn = { navController.navigate(AppScreen.SignIn.title) },
                                 onNavigateToSignUp = { navController.navigate(AppScreen.Register.title) }
+                            )
+                        }
+
+                        composable(route = AppScreen.Collection.title) {
+                            CollectionScreen(
+                                onNavigateToGameDetails = { gameId ->
+                                    navController.navigate(AppScreen.GameDetails.title.replace("{gameId}", gameId))
+                                }
                             )
                         }
                     }
