@@ -5,7 +5,9 @@ import com.xboxgamecollection.app.features.game.data.service.GameService
 import com.xboxgamecollection.app.features.game.domain.repository.IGameRepository
 import com.xboxgamecollection.app.features.game.domain.service.IGameService
 import com.xboxgamecollection.app.features.game.domain.usecase.GetAllGamesUseCase
+import com.xboxgamecollection.app.features.game.domain.usecase.GetCollectionUseCase
 import com.xboxgamecollection.app.features.game.domain.usecase.GetGameByIdUseCase
+import com.xboxgamecollection.app.features.auth.data.service.AuthenticationService
 import com.xboxgamecollection.app.network.services.apiClient
 import org.koin.dsl.module
 
@@ -15,4 +17,5 @@ val gameModule = module {
     single<IGameRepository> { GameRepository(get()) }
     single { GetGameByIdUseCase(get()) }
     single { GetAllGamesUseCase(get()) }
+    single { GetCollectionUseCase(get()) }
 }
