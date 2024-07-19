@@ -15,4 +15,8 @@ class GameRepository(
     override suspend fun getAll(search: String?, genre: String?): List<Game> {
         return gameService.getAll(search, genre)
     }
+
+    override suspend fun getCollection(bearerAuth: String): List<Game> {
+        return gameService.getCollection(bearerAuth)
+    }
 }
