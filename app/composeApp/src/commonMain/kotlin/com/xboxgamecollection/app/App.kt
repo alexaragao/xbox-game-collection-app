@@ -15,6 +15,7 @@ import com.xboxgamecollection.app.ui.screens.barcodeScanner.BarcodeScannerScreen
 import com.xboxgamecollection.app.ui.screens.gameDetails.GameDetailsScreen
 import com.xboxgamecollection.app.ui.screens.start.StartScreen
 import com.xboxgamecollection.app.ui.screens.profile.ProfileScreen
+import com.xboxgamecollection.app.ui.screens.scanResult.ScanResultScreen
 import com.xboxgamecollection.app.ui.screens.signIn.SignInScreen
 import org.koin.compose.KoinApplication
 
@@ -58,13 +59,21 @@ internal fun App() = AppTheme {
                             ),
                             content = { GameDetailsScreen(it) }
                         )
-                        
+
                         composable(route = AppScreen.Start.title) {
                             StartScreen(
                                 onNavigateToSignIn = { navController.navigate(AppScreen.SignIn.title) },
                                 onNavigateToSignUp = { navController.navigate(AppScreen.Register.title) }
                             )
                         }
+
+                        composable(
+                            route = AppScreen.ScanResult.title,
+                            arguments = listOf(
+                                navArgument("barcode") { type = NavType.StringType }
+                            ),
+                            content = { ScanResultScreen(it) }
+                        )
                     }
                 }
             }
