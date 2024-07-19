@@ -1,30 +1,50 @@
 package com.xboxgamecollection.app.ui.screens.collection
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.xboxgamecollection.app.features.core.composables.BottomTab
 import com.xboxgamecollection.app.features.core.composables.BottomTabItems
 import com.xboxgamecollection.app.features.game.data.model.Game
-import com.xboxgamecollection.app.features.game.domain.usecase.GetCollectionUseCase
+import com.xboxgamecollection.app.features.userCollection.domain.usecase.GetUserGamesCollectionUseCase
 import org.koin.compose.getKoin
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CollectionScreen(
     onNavigateToGameDetails: (String) -> Unit
 ) {
-    val getCollectionUseCase: GetCollectionUseCase = getKoin().get()
-    val viewModel = remember { CollectionScreenViewModel(getCollectionUseCase) }
+    val getUserGamesCollectionUseCase: GetUserGamesCollectionUseCase = getKoin().get()
+    val viewModel = remember { CollectionScreenViewModel(getUserGamesCollectionUseCase) }
     val state by viewModel.uiState.collectAsState()
 
     Scaffold(
@@ -40,8 +60,11 @@ fun CollectionScreen(
 
                     if (state.isLoading) {
                         CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-                    } else if (state.collection.isNullOrEmpty()) {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    } else if (state.collection.isEmpty()) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(
                                     text = "No games in collection",
@@ -51,7 +74,11 @@ fun CollectionScreen(
                             }
                         }
                     } else {
-                        GameGrid(games = state.collection!!, onGameSelected = onNavigateToGameDetails)
+                        GameGrid(
+                            games = state.collection,
+                            onRefresh = { viewModel.onRefreshGames() },
+                            onGameSelected = onNavigateToGameDetails
+                        )
                     }
                 }
             }
@@ -64,19 +91,45 @@ fun CollectionScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GameGrid(games: List<Game>, onGameSelected: (String) -> Unit = {}) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        contentPadding = PaddingValues(16.dp),
-    ) {
-        itemsIndexed(games) { _, game ->
-            GameItem(
-                imageUrl = game.boxArtUrl,
-                description = game.title,
-                onClick = { onGameSelected(game.id) }
-            )
+fun GameGrid(
+    games: List<Game>,
+    onRefresh: () -> Unit = {},
+    onGameSelected: (String) -> Unit = {}
+) {
+    val pullToRefreshState = rememberPullToRefreshState()
+
+    if (pullToRefreshState.isRefreshing) {
+        LaunchedEffect(true) {
+            onRefresh()
+            pullToRefreshState.endRefresh()
         }
+    }
+
+    Box(
+        modifier = Modifier
+            .clipToBounds()
+            .nestedScroll(pullToRefreshState.nestedScrollConnection)
+    ) {
+        LazyVerticalGrid(
+            modifier = Modifier.fillMaxSize(),
+            columns = GridCells.Fixed(3),
+            contentPadding = PaddingValues(16.dp),
+        ) {
+            itemsIndexed(games) { _, game ->
+                GameItem(
+                    imageUrl = game.boxArtUrl,
+                    description = game.title,
+                    onClick = { onGameSelected(game.id) }
+                )
+            }
+        }
+
+        PullToRefreshContainer(
+            modifier = Modifier.align(Alignment.TopCenter),
+            state = pullToRefreshState,
+        )
     }
 }
 
