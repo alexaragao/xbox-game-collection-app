@@ -10,4 +10,5 @@ enum class AppScreen(val title: String) {
     Register(title = "app_register"),
     BarcodeScanner(title = "app_barcode_scanner"),
     Collection(title = "app_collection"),
+    ScanResult(title = "app_scan_result/{barcode}"),
 }
