@@ -6,4 +6,5 @@ data class ScanResultState(
     var state: String = "",
     val game: Game? = null,
     val notes: String = "",
+    val isBusyAddingGame: Boolean = false
 )

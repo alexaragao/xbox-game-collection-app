@@ -10,6 +10,7 @@ import com.xboxgamecollection.app.ui.screens.gameList.GameListScreen
 import com.xboxgamecollection.app.navigation.AppScreen
 import com.xboxgamecollection.app.navigation.NavControllerProvider
 import com.xboxgamecollection.app.theme.AppTheme
+import com.xboxgamecollection.app.ui.screens.collection.CollectionScreen
 import com.xboxgamecollection.app.ui.screens.register.RegisterScreen
 import com.xboxgamecollection.app.ui.screens.barcodeScanner.BarcodeScannerScreen
 import com.xboxgamecollection.app.ui.screens.gameDetails.GameDetailsScreen
@@ -67,6 +68,13 @@ internal fun App() = AppTheme {
                             )
                         }
 
+                        composable(route = AppScreen.Collection.title) {
+                            CollectionScreen(
+                                onNavigateToGameDetails = { gameId ->
+                                    navController.navigate(AppScreen.GameDetails.title.replace("{gameId}", gameId))
+                                }
+                            )
+                        }
                         composable(
                             route = AppScreen.ScanResult.title,
                             arguments = listOf(

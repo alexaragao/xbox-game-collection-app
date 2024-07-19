@@ -35,7 +35,7 @@ fun BottomTab(
 
     fun onNavigateToGameList() = navController.navigate(AppScreen.GameList.title)
 
-    fun onNavigateToCollection() = navController.navigate(AppScreen.GameList.title)
+    fun onNavigateToCollection() = navController.navigate(AppScreen.Collection.title)
 
     fun onNavigateToProfile() = navController.navigate(AppScreen.Profile.title)
 
