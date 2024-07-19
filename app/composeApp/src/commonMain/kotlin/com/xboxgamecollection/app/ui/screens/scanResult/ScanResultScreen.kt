@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -16,8 +15,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -65,7 +64,9 @@ fun ScanResultScreen(barcode: String) {
                     Text("Add game")
                 },
                 navigationIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(
+                        onClick = { navController.popBackStack() }
+                    ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
@@ -124,17 +125,25 @@ fun ScanResultScreen(barcode: String) {
                     Text("Notes")
                 },
                 maxLines = 4,
+                minLines = 4,
                 modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.weight(1f))
 
             Column {
-                Button(
-                    onClick = { viewModel.addGameToCollection() },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = "Add game to my collection")
+                if (uiState.isBusyAddingGame) {
+                    CircularProgressIndicator()
+                }
+
+                if (!uiState.isBusyAddingGame) {
+                    Button(
+                        onClick = { viewModel.addGameToCollection() },
+                        enabled = !uiState.isBusyAddingGame,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = "Add game to my collection")
+                    }
                 }
             }
         }
